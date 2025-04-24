@@ -1,20 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>My First Web Page</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Cool Terminal Fireworks</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #111;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    
+        .firework {
+            position: absolute;
+            color: white;
+            font-size: 24px;
+            animation: explode 1.5s ease-out infinite;
+            will-change: transform, opacity, color;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+    
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+    
+            50% {
+                transform: translate(var(--x), var(--y)) scale(1.5);
+                opacity: 0.8;
+            }
+    
+            100% {
+                transform: translate(var(--x), var(--y)) scale(3);
+                opacity: 0;
+            }
+        }
+    
+        @keyframes backgroundShift {
+            0% {
+                background: linear-gradient(135deg, #ff6a00, #ee0979);
+            }
+    
+            25% {
+                background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            }
+    
+            50% {
+                background: linear-gradient(135deg, #ff00ff, #ff7a00);
+            }
+    
+            75% {
+                background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            }
+    
+            100% {
+                background: linear-gradient(135deg, #ff6a00, #ee0979);
+            }
+        }
+    
+        body {
+            animation: backgroundShift 5s infinite alternate;
+        }
+    
+        .firework span {
+            position: absolute;
+            animation: flash 0.8s ease-out infinite;
+            opacity: 0.9;
+            font-size: 30px;
+            color: white;
+            animation-delay: 0s;
+            will-change: transform, opacity;
+        }
+    
+        @keyframes flash {
+            0% {
+                opacity: 1;
+            }
+    
+            50% {
+                opacity: 0.3;
+            }
+    
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Welcome to My Web Page</h1>
-    <p>This is a simple paragraph.</p>
-    <img src="image.png" alt="My Image">
-    <button onclick="alert('Hello!')">Click Me</button>
-    <script src="script.js"></script>
-    <p>My cat is very grumpy</p>
+    <script>
+        function createFirework(x, y) {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            const symbols = ['✸', '✺', '✪', '✩', '★', '⊛', '✿', '❀', '⚡', '◆'];
+            firework.innerText = symbols[Math.floor(Math.random() * symbols.length)];
 
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+            firework.style.setProperty('--x', `${Math.random() * 500 - 250}px`);
+            firework.style.setProperty('--y', `${Math.random() * 500 - 250}px`);
+            firework.style.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+            firework.style.fontSize = `${Math.random() * 30 + 20}px`;
+            firework.style.animationDuration = `${Math.random() * 1.5 + 1}s`;
+
+            // Add multiple small spark effects
+            for (let i = 0; i < 5; i++) {
+                const spark = document.createElement('span');
+                spark.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                spark.style.left = `${Math.random() * 60 - 30}px`;
+                spark.style.top = `${Math.random() * 60 - 30}px`;
+                spark.style.animationDelay = `${Math.random() * 0.5}s`;
+                firework.appendChild(spark);
+            }
+
+            document.body.appendChild(firework);
+
+            // Remove the firework after animation ends
+            firework.addEventListener('animationend', () => {
+                firework.remove();
+            });
+        }
+
+        function generateFireworks() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            createFirework(x, y);
+        }
+
+            setInterval(generateFireworks, 100);  // Faster fireworks for more intense effect
+        </script>
 </body>
 
 </html>
